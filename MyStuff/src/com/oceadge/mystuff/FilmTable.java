@@ -8,8 +8,6 @@ import java.sql.Statement;
 /**
  * @author Steee
  * 
- * Comment added here to test Subversion
- * 
  * This class is related to the film_table table
  *     film_number serial  (This will always be DEFAULT)
  *     film_name character varying
