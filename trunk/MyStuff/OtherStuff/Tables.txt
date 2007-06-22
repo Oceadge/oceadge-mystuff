@@ -1,0 +1,369 @@
+--
+-- General
+--
+--
+
+CREATE TABLE obtain_address_table
+(
+  obtain_address_number serial NOT NULL PRIMARY KEY,
+  obtain_address_name character varying NOT NULL,  -- A description of the address.  E.g. Golden Disc
+  obtain_address_branch character varying, -- The branch of this particular shop.  E.g. Henry Street
+  obtain_address_address1 character varying,
+  obtain_address_address2 character varying,
+  obtain_address_address3 character varying,
+  obtain_address_suburb character varying,
+  obtain_address_county character varying,
+  obtain_address_state character varying,
+  obtain_address_zip character varying,
+  obtain_address_country character varying,
+  obtain_address_location_comments character varying  -- Any comments on the actual address
+) 
+WITHOUT OIDS;
+
+
+
+
+--
+-- Films
+--
+--
+
+CREATE TABLE film_table
+(
+  film_number serial NOT NULL PRIMARY KEY,
+  film_name character varying NOT NULL,  -- The name of the film
+  film_name2 character varying,
+  film_name_alternative character varying,
+  film_name_original character varying,  -- The original name of the film for example if in a different language
+  film_year integer,  -- The year the film was made - according to the year at the end of the credits (or another trusted source).
+  film_comments character varying  -- Any comments on the actual film itself (not on a particular viewing).
+) 
+WITHOUT OIDS;  
+
+
+
+CREATE TABLE medium_table
+(
+  medium_number serial NOT NULL PRIMARY KEY,
+  medium_name character varying NOT NULL,  -- The medium that film or Tv series is stored on.  E.g. Polyester (for films in cinema maybe?), VHS, DVD, Blu-Ray etc.
+  medium_description character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_format_table
+(
+  film_format_number serial NOT NULL PRIMARY KEY,
+  film_format_name character varying NOT NULL,  -- The format of the film.  E.g. Cinema, Television etc.
+  film_format_description character varying  -- A description of the format  
+) 
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_format_details_table
+(
+  film_format_details_number serial NOT NULL PRIMARY KEY,
+  film_format_details_name character varying NOT NULL,  -- Details of the format.  E,g. Forum 1, Forum 2 etc.
+  film_format_number integer REFERENCES film_format_table(film_format_number),
+  film_format_details_description character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_ratio_table
+(
+  film_ratio_number serial NOT NULL PRIMARY KEY,
+  film_ration_name character varying NOT NULL  -- The aspect ratio the film was seen in.  E.g. 2.35:1
+) 
+WITHOUT OIDS;
+
+
+
+CREATE TABLE location_seen_table
+(
+  film_location_seen_number serial NOT NULL PRIMARY KEY,
+  film_location_seen_name character varying NOT NULL,  -- A description of the address.  E.g. Home (3 Upton Albert Road)
+  film_address1 character varying,
+  film_address2 character varying,
+  film_address3 character varying,
+  film_suburb character varying,
+  film_county character varying,
+  film_state character varying,
+  film_zip character varying,
+  film_country character varying,
+  film_location_comments character varying  -- Any comments on the actual address
+) 
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_top_ten_table
+(
+  film_top_ten_number serial NOT NULL PRIMARY KEY,
+  film_number integer REFERENCES film_table(film_number) NOT NULL,  -- The film_number of the film from film_table
+  film_top_ten_year_seen integer,  -- The year the film was seen (should this be worked out from the date?)
+  film_top_ten_year_position integer  -- The position in the top ten of the film.  E.g. 1
+) 
+WITHOUT OIDS;
+
+
+
+CREATE TABLE review_source_table
+(
+  review_source_number serial NOT NULL PRIMARY KEY,
+  review_source_name character varying NOT NULL,  -- e.g. Empire (Cinema), SFX (Cinema), SFX (DVD), SFX (BluRay) etc.
+  review_source_base real, -- e.g. 100 (if mark is out of 100), 10 (if it's out of 10) etc.
+  review_source_issue integer, -- Issue number if from a magazine
+  review_source_reference character varying, -- If not a magazine then another reference e.g. http://www.imdb.com/78457465 or something.
+  review_source_type character varying, -- e.g. Magazine, Website etc
+  review_source_description character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_review_table
+(
+  film_review_number serial NOT NULL PRIMARY KEY,
+  film_number integer REFERENCES film_table(film_number) NOT NULL,  -- The film_number of the film from film_table
+  review_source_number integer REFERENCES review_source_table(review_source_number) NOT NULL,
+  film_review_rating real
+) 
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_seen_with_person_table
+(
+  film_seen_with_person_number serial NOT NULL PRIMARY KEY,
+  film_seen_with_person_first_name character varying NOT NULL,
+  film_seen_with_person_last_name character varying NOT NULL,
+  film_seen_with_person_description character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_price_currency_table
+(
+  film_price_currency_number serial NOT NULL PRIMARY KEY,
+  film_price_currency_name character varying NOT NULL,  -- E.g. US Dollar, Australian Dollar etc.
+  film_price_currency_short_name character varying NOT NULL,  -- E.g. AU$, US$ etc.
+  film_price_currency_rate real  -- This could be loaded with actual exchange rates - maybe automatically some day
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_details_table
+(
+  film_details_number serial NOT NULL PRIMARY KEY,
+  film_number integer REFERENCES film_table(film_number) NOT NULL,  -- The film_number of the film viewed from film_table
+  film_details_date_seen date NOT NULL,
+  film_format_number integer REFERENCES film_format_table(film_format_number),
+  film_ratio_number integer REFERENCES film_ratio_table(film_ratio_number),
+  film_location_seen_number integer REFERENCES location_seen_table(film_location_seen_number),
+  film_format_details_number integer REFERENCES film_format_details_table(film_format_details_number),
+  medium_number integer REFERENCES medium_table(medium_number),
+  film_details_location_comments character varying,  -- Comments about the actual location.  E.g. Saw this on a plane to America
+  film_details_film_comments character varying,  -- Comments about the film at this viewing.  E.g. I enjoyed it better when I saw it the first time in the cinema
+  film_price_currency_number integer REFERENCES film_price_currency_table(film_price_currency_number),
+  film_price real, -- The price to see the film in local currency
+  film_price_comment character varying, -- Any comments of the price.  E.g. Reason why it was free etc.
+  film_imdb_vote boolean, -- Have I voted for this film on the IMDB yet  ** Should this be per instance of seen the film (here) or per film (in the film table)?
+  film_worth_buying boolean,  --Do I think it is worth buying to watch again?
+  film_rating integer  -- A rating between 1 and 10 of how much I enjoyed the film on this viewing
+)  
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_seen_with_table
+(
+  film_seen_with_number serial NOT NULL PRIMARY KEY,
+  film_details_number integer REFERENCES film_details_table(film_details_number),
+  film_seen_with_person_number integer REFERENCES film_seen_with_person_table,
+  film_seen_with_description character varying,
+  film_seen_with_vote integer
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE film_obtain_table
+(
+  film_obtain_number serial NOT NULL PRIMARY KEY,
+  film_number integer REFERENCES film_table(film_number) NOT NULL,  -- The film_number of the film purchased from film_table
+  film_format_number integer REFERENCES film_format_table(film_format_number),  -- A reference to the film_format_table.  To express the format.  E.g. DVD, Blu-Ray etc.
+  film_obtain_part_box_set boolean,
+  box_set_number integer,  -- If this film is part of a box-set, this is a reference to it.
+  film_obtain_date date, -- Date the film was obtained
+  obtain_address_number integer REFERENCES obtain_address_table(obtain_address_number), -- The obtain_address_number of the address from obtain_address_table
+  film_obtain_comments character varying  -- Any comments on how this film was obtained.  E.g. This film was given to me on my Birthday.
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE box_set_table
+(
+  box_set_number serial NOT NULL PRIMARY KEY,
+  box_set_name character varying NOT NULL,  -- The name of the box-set.  E.g. "Star Wars The Original Trilogy"
+  box_set_name2 character varying,  -- A sub name of the box-set.  E.g. "Special Edition"
+  box_set_season_number integer,  -- the season number if part of a Tv series for example
+  box_set_year integer,  -- The year the box-set was released if known
+  box_set_description character varying  -- A description if desired
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE tv_show_table
+(
+  tv_show_number serial NOT NULL PRIMARY KEY,
+  tv_show_name character varying NOT NULL,  -- The name of the Tv Programme
+  tv_show_name2 character varying,
+  tv_show_name_alternative character varying,
+  tv_show_name_original character varying,  -- The original name of the film for example if in a different language
+  tv_show_year integer,  -- The year this season of the Tv show started or was first shown.
+  tv_show_comments character varying  -- Any comments on the actual Tv programme itself (not on a particular viewing).
+)  
+WITHOUT OIDS;
+
+
+CREATE TABLE tv_obtain_table
+(
+  tv_obtain_number serial NOT NULL PRIMARY KEY,
+  tv_show_number integer REFERENCES tv_show_table(tv_show_number) NOT NULL,
+  medium_number integer REFERENCES medium_table(medium_number),  -- A reference to the medium_table.  To express the medium of the Tv series.  E.g. VHS, DVD etc.
+  tv_obtain_date date, -- Date the Tv programme was obtained
+  obtain_address_number integer REFERENCES obtain_address_table, -- The obtain_address_number of the address from obtain_address_table
+  tv_obtain_comments character varying  -- Any comments on how this film was obtained.  E.g. This film was given to me on my Birthday.
+)
+WITHOUT OIDS;
+
+
+
+
+--
+-- Books
+--
+-- Add pricing? ***************************
+
+CREATE TABLE book_format_table
+(
+  book_format_number serial NOT NULL PRIMARY KEY,
+  book_format_name character varying,  -- E.g. Hardback, paperback etc.
+  book_format_comments character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE book_table
+(
+  book_number serial NOT NULL PRIMARY KEY,
+  book_isbn_10 character varying,  -- Confirm the length of this
+  book_isbn_13 character varying,  -- Confirm the length of this
+  book_year integer,
+  book_format integer REFERENCES book_format_table(book_format_number),
+  book_pages integer,
+  book_comments character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE book_author_table
+(
+  book_author_number serial NOT NULL PRIMARY KEY,
+  book_author_firstname character varying,
+  book_author_middlename character varying,
+  book_author_initials character varying,
+  book_author_lastname character varying,
+  book_author_comments character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE book_written_by_table
+(
+  book_written_by_number serial NOT NULL PRIMARY KEY,
+  book_author_number integer REFERENCES book_author_table(book_author_number),
+  book_number integer REFERENCES book_table(book_number),
+  book_written_by_comments character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE book_read_table
+(
+  book_read_number serial NOT NULL PRIMARY KEY,
+  book_number integer REFERENCES book_table(book_number),
+  book_read_start_date date,
+  book_finish_date date,
+  book_rating integer,
+  book_read_comments character varying
+)
+WITHOUT OIDS;
+ 
+
+
+
+
+
+--
+-- Games
+--
+-- Add Pricing ************************************
+
+CREATE TABLE game_format_table
+(
+  game_format_number serial NOT NULL PRIMARY KEY,
+  game_format_name character varying,  -- E.g. PlayStation 3, Xbox360 etc.
+  game_format_description character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE game_table
+(
+  game_number serial NOT NULL PRIMARY KEY,
+  game_name character varying,
+  game_format integer REFERENCES game_format_table(game_format_number),
+
+
+
+
+CREATE TABLE  game_hardware_table
+(
+  game_hardware_number NOT NULL PRIMARY KEY,
+  game_hardware_name character varying,
+  game_format_number integer REFERENCES game_format_table(game_format_number),
+  game_hardware_comments character varying
+)
+WITHOUT OIDS;
+
+
+
+CREATE TABLE game_hardware_obtain_table
+(
+  game_hardware_obtain_number NOT NULL PRIMARY KEY,
+  game_hardware_number integer REFERENCES game_hardware_table(game_hardware_number),
+  game_hardware_obtain_date date,
+  obtain_address_number integer REFERENCES obtain_address_table(obtain_address_number),
+  game_hardware_obtain_comments character varying
+)
+WITHOUT OIDS;
+
+
+
+Just testing SVC, delete this line.
+  
+  
