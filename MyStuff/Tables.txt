@@ -362,5 +362,8 @@ CREATE TABLE game_hardware_obtain_table
 )
 WITHOUT OIDS;
 
+
+
+Just testing SVC, delete this line.
   
   
