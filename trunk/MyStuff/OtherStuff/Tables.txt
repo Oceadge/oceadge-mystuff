@@ -111,13 +111,14 @@ WITHOUT OIDS;
 
 
 
+-- Add Game magazines here too + reference console name etc. Also e.g. SFX (Book - Hardback) etc.
+--
 CREATE TABLE review_source_table
 (
   review_source_number serial NOT NULL PRIMARY KEY,
   review_source_name character varying NOT NULL,  -- e.g. Empire (Cinema), SFX (Cinema), SFX (DVD), SFX (BluRay) etc.
   review_source_base real, -- e.g. 100 (if mark is out of 100), 10 (if it's out of 10) etc.
-  review_source_issue integer, -- Issue number if from a magazine
-  review_source_reference character varying, -- If not a magazine then another reference e.g. http://www.imdb.com/78457465 or something.
+  review_source_reference character varying, -- If not a magazine then another reference e.g. http://www.imdb.com/ or something.
   review_source_type character varying, -- e.g. Magazine, Website etc
   review_source_description character varying
 )
@@ -130,6 +131,7 @@ CREATE TABLE film_review_table
   film_review_number serial NOT NULL PRIMARY KEY,
   film_number integer REFERENCES film_table(film_number) NOT NULL,  -- The film_number of the film from film_table
   review_source_number integer REFERENCES review_source_table(review_source_number) NOT NULL,
+  film_review_issue integer, -- Issue number if from a magazine
   film_review_rating real
 ) 
 WITHOUT OIDS;
@@ -361,9 +363,3 @@ CREATE TABLE game_hardware_obtain_table
   game_hardware_obtain_comments character varying
 )
 WITHOUT OIDS;
-
-
-
-Just testing SVC, delete this line.
-  
-  
