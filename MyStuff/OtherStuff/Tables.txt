@@ -1,5 +1,13 @@
---
+----------
 -- General
+--
+--
+
+
+--
+-- obtain_address_table
+--
+-- add, modify, delete?, find?
 --
 --
 
@@ -23,7 +31,7 @@ WITHOUT OIDS;
 
 
 
---
+--------
 -- Films
 --
 --
@@ -45,7 +53,7 @@ WITHOUT OIDS;
 CREATE TABLE medium_table
 (
   medium_number serial NOT NULL PRIMARY KEY,
-  medium_name character varying NOT NULL,  -- The medium that film or Tv series is stored on.  E.g. Polyester (for films in cinema maybe?), VHS, DVD, Blu-Ray etc.
+  medium_name character varying NOT NULL,  -- The medium that film or Tv series is stored on.  E.g. Polyester or reel? (for films in cinema maybe?), VHS, DVD, Blu-Ray etc.
   medium_description character varying
 )
 WITHOUT OIDS;
