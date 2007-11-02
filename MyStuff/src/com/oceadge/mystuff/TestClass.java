@@ -20,7 +20,7 @@ public class TestClass {
     // Insert a film
     //
     FilmTable f = new FilmTable();
-    boolean result = f.insertFilm("Ratatouille", "", "", "", 2007, "It was great");
+    boolean result = f.insertFilm("Ratatouille 2", "", "", "", 2007, "It was great");
     if (result == true){
       System.out.println("Film already exists in database.");      
     }
