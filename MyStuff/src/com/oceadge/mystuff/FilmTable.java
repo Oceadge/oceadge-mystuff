@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.oceadge.mystuff.search.*;
+
 /**
  * @author Steee
  * 
@@ -36,14 +38,15 @@ public class FilmTable {
   public boolean insertFilm(String film_name, String film_name2, String film_name_alternative, String film_name_original, int film_year, String film_comments) {
 
     DataBase d = new DataBase();
-    c = d.establishConnection(); 
+    c = d.establishConnection();
+    DoesExist f = new DoesExist();
+    
     boolean found = false;
     
-    found = testFilmExists(film_name, film_year);
+    found = f.testFilmExists(film_name, film_year);
     System.out.println("Found = " + found);
     if (found){
       System.out.println("Film: " + film_name + " already exists");
-      c.close();
       return true;
     }
 
@@ -128,7 +131,7 @@ public class FilmTable {
   /*
    * Method testFilmExists()
    *
-   */
+   *
   public boolean testFilmExists(String film_name, int film_year){
 
     s = null;
@@ -148,6 +151,7 @@ public class FilmTable {
     }
     return found;
   }
+  */
 
   /*
    * Method editFilm()
