@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.oceadge.mystuff.search.DoesExist;
+
 /**
  * @author Steee
  * 
@@ -39,7 +41,7 @@ public class ObtainAddressTable {
   
   
   /*
-   * Method: insertFilm()
+   * Method: insertAddress()
    *
    */
   public boolean insertAddress(String obtain_address_name,
@@ -55,50 +57,53 @@ public class ObtainAddressTable {
                                String obtain_address_location_comments) {
 
     DataBase d = new DataBase();
-    c = d.establishConnection(); 
-    boolean found = false;
+    c = d.establishConnection();
+    DoesExist f = new DoesExist();
+    boolean found = false;    
     
-    // Okay, this has to go in it's own class - pass the table name and parameters and return true or false at least.
-    found = testFilmExists(film_name, film_year);
+    found = f.testAddressExists(obtain_address_address1, obtain_address_suburb);
     System.out.println("Found = " + found);
     if (found){
-      System.out.println("Film: " + film_name + " already exists");
-      c.close();
+      System.out.println("Address: " + obtain_address_address1 + ", " + obtain_address_suburb + " already exists");
       return true;
     }
 
+   
+    // Address not found so insert into the table
+    // 
+    // Prepared Statement - INSERT
+    //
 
+    try {
+      ps = c.prepareStatement("INSERT INTO obtain_address_table VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      ps.setString(1, obtain_address_name);
+      ps.setString(2, obtain_address_branch);
+      ps.setString(3, obtain_address_address1);
+      ps.setString(4, obtain_address_address2);
+      ps.setString(5, obtain_address_address3);
+      ps.setString(6, obtain_address_suburb);
+      ps.setString(7, obtain_address_county);
+      ps.setString(8, obtain_address_state);
+      ps.setString(9, obtain_address_zip);
+      ps.setString(10, obtain_address_country);
+      ps.setString(11, obtain_address_location_comments);
+    } catch (SQLException se) {
+      System.out.println("We got an exception while preparing a statement:" +
+                         "Probably bad SQL.");
+      se.printStackTrace();
+      System.exit(1);        
+    }
 
-//    ********************
-//    INSERT - Prepared Statement
-//    ********************
-
-      try {
-        ps = c.prepareStatement("INSERT INTO film_table VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)");
-        ps.setString(1, film_name);
-        ps.setString(2, film_name2);
-        ps.setString(3, film_name_alternative);
-        ps.setString(4, film_name_original);
-        ps.setInt(5, film_year);
-        ps.setString(6, film_comments);
-      } catch (SQLException se) {
-        System.out.println("We got an exception while preparing a statement:" +
-                           "Probably bad SQL.");
-        se.printStackTrace();
-        System.exit(1);        
-      }
-
-      try {
-        ps.executeUpdate();
-        System.out.println("Added " + film_name + " to table");
-        c.close();
-        return false;
-      } catch (SQLException se) {
-        System.out.println("We got an exception while executing an update:" +
-                           "possibly bad SQL, or check the connection.");
-        se.printStackTrace();
-        System.exit(1);
-      }
+    try {
+      ps.executeUpdate();
+      System.out.println("Added address: " + obtain_address_name + "-" + obtain_address_branch + ", " + obtain_address_suburb + " to table");
       return false;
+    } catch (SQLException se) {
+      System.out.println("We got an exception while executing an update:" +
+                         "possibly bad SQL, or check the connection.");
+      se.printStackTrace();
+      System.exit(1);
+    }
+    return false;
   }
 }
