@@ -18,7 +18,7 @@ public class TestClass {
     
      
     // Insert a film
-    //
+    /*
     FilmTable f = new FilmTable();
     boolean result = f.insertFilm("Ratatouille 2", "", "", "", 2007, "It was great");
     if (result == true){
@@ -27,7 +27,7 @@ public class TestClass {
     else{
       System.out.println("Film added to database.");
     }
-
+    */
     
     //  Select *    
     //FilmTable ft = new FilmTable();
@@ -39,5 +39,10 @@ public class TestClass {
     //FilmTable f = new FilmTable();
     //isFound = f.testFilmExists("Jaws 4");
     //System.out.println("Film found? - " + isFound);
+    
+    
+    
+    ObtainAddressTable o = new ObtainAddressTable( );
+    o.insertAddress("Greater Union", "Burwood", "", "", "", "Burwood", "", "NSW", "2033", "Australia", "");
   }
 }
