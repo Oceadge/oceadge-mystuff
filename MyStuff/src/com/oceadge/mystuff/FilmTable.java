@@ -52,38 +52,38 @@ public class FilmTable {
 
 
 
-//	  ********************
-//	  INSERT - Prepared Statement
-//	  ********************
+   /*
+    * Film not found so insert into the table
+    * 
+    * Prepared Statement - INSERT
+    */
 
-	   	try {
-	   	  ps = c.prepareStatement("INSERT INTO film_table VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)");
-	   	  ps.setString(1, film_name);
-	   	  ps.setString(2, film_name2);
-	   	  ps.setString(3, film_name_alternative);
-	   	  ps.setString(4, film_name_original);
-	   	  ps.setInt(5, film_year);
-	   	  ps.setString(6, film_comments);
-	   	} catch (SQLException se) {
-	   	  System.out.println("We got an exception while preparing a statement:" +
-	   	                     "Probably bad SQL.");
-	   	  se.printStackTrace();
-	   	  System.exit(1);        
-	   	}
-
+  	try {
+  	  ps = c.prepareStatement("INSERT INTO film_table VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)");
+   	  ps.setString(1, film_name);
+   	  ps.setString(2, film_name2);
+   	  ps.setString(3, film_name_alternative);
+   	  ps.setString(4, film_name_original);
+   	  ps.setInt(5, film_year);
+   	  ps.setString(6, film_comments);
+   	} catch (SQLException se) {
+   	  System.out.println("We got an exception while preparing a statement:" +
+   	                     "Probably bad SQL.");
+   	  se.printStackTrace();
+   	  System.exit(1);        
+   	}
 	  	try {
-	      ps.executeUpdate();
-	      System.out.println("Added " + film_name + " to table");
-        c.close();
-	      return false;
-	    } catch (SQLException se) {
-	      System.out.println("We got an exception while executing an update:" +
-	                         "possibly bad SQL, or check the connection.");
-	      se.printStackTrace();
-	      System.exit(1);
-	    }
-	    return false;
-	}
+      ps.executeUpdate();
+      System.out.println("Added " + film_name + " to table");
+      return false;
+    } catch (SQLException se) {
+      System.out.println("We got an exception while executing an update:" +
+                         "possibly bad SQL, or check the connection.");
+      se.printStackTrace();
+      System.exit(1);
+    }
+    return false;
+  }
 
   /*
    * Method: getAllFilms()
@@ -127,31 +127,6 @@ public class FilmTable {
       System.exit(1);
     }
   }
-
-  /*
-   * Method testFilmExists()
-   *
-   *
-  public boolean testFilmExists(String film_name, int film_year){
-
-    s = null;
-    rs = null;
-
-    //establishConnection();
-
-    try {
-      s = c.createStatement();
-      rs = s.executeQuery("SELECT * FROM film_table WHERE film_name = '"+ film_name +"' AND film_year = "+ film_year +"");
-      found = rs.next();
-    } catch (SQLException se) {
-      System.out.println("We got an exception while executing our query:" +
-                         "that probably means our SQL is invalid");
-      se.printStackTrace();
-      System.exit(1);
-    }
-    return found;
-  }
-  */
 
   /*
    * Method editFilm()
