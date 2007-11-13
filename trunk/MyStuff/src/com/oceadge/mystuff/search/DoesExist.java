@@ -39,4 +39,31 @@ public class DoesExist {
     }    
     return found;
   }
+  
+  
+  /*
+   * Method testAddressExists()
+   *
+   */
+  public boolean testAddressExists(String obtain_address_address1, String obtain_address_suburb){
+
+    s = null;
+    rs = null;
+    boolean found = false;
+    
+    DataBase d = new DataBase();
+    c = d.establishConnection();
+
+    try {
+      s = c.createStatement();
+      rs = s.executeQuery("SELECT * FROM obtain_address_table WHERE obtain_address_address1 = '"+ obtain_address_address1 +"' AND obtain_address_suburb = '"+ obtain_address_suburb +"'");
+      found = rs.next();
+    } catch (SQLException se) {
+      System.out.println("We got an exception while executing our query:" +
+                         "that probably means our SQL is invalid");
+      se.printStackTrace();
+      System.exit(1);
+    }    
+    return found;
+  }
 }
