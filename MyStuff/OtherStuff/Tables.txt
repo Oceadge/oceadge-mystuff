@@ -341,7 +341,9 @@ CREATE TABLE game_format_table
 WITHOUT OIDS;
 
 
-
+-- ******
+-- Found this incomplete - check!
+-- ******
 CREATE TABLE game_table
 (
   game_number serial NOT NULL PRIMARY KEY,
@@ -353,7 +355,7 @@ CREATE TABLE game_table
 
 CREATE TABLE  game_hardware_table
 (
-  game_hardware_number NOT NULL PRIMARY KEY,
+  game_hardware_number serial NOT NULL PRIMARY KEY,
   game_hardware_name character varying,
   game_format_number integer REFERENCES game_format_table(game_format_number),
   game_hardware_comments character varying
@@ -364,7 +366,7 @@ WITHOUT OIDS;
 
 CREATE TABLE game_hardware_obtain_table
 (
-  game_hardware_obtain_number NOT NULL PRIMARY KEY,
+  game_hardware_obtain_number serial NOT NULL PRIMARY KEY,
   game_hardware_number integer REFERENCES game_hardware_table(game_hardware_number),
   game_hardware_obtain_date date,
   obtain_address_number integer REFERENCES obtain_address_table(obtain_address_number),
