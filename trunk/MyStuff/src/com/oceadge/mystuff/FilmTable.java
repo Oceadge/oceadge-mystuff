@@ -72,10 +72,10 @@ public class FilmTable {
    	  se.printStackTrace();
    	  System.exit(1);        
    	}
-	  	try {
+	  try {
       ps.executeUpdate();
       System.out.println("Added " + film_name + " to table");
-      return false;
+      //return false;
     } catch (SQLException se) {
       System.out.println("We got an exception while executing an update:" +
                          "possibly bad SQL, or check the connection.");
@@ -83,6 +83,37 @@ public class FilmTable {
       System.exit(1);
     }
     return false;
+  }
+  
+  
+  /*
+   * Method: getCurrentSequenceValue
+   */
+  public int getCurrentSequenceValue(){
+    
+    DataBase d = new DataBase();
+    c = d.establishConnection();
+    //int i = 1;
+
+    try {
+      s = c.createStatement();
+    } catch (SQLException se) {
+      System.out.println("We got an exception while creating a statement:" +
+                         "that probably means we're no longer connected.");
+      se.printStackTrace();
+      System.exit(1);
+    }
+    try {      
+      //rs = s.executeQuery("SELECT last_insert_id(film_table, film_number");
+      rs = s.executeQuery("SELECT CURRVAL('film_table_film_number_seq'");
+      rs.next();
+      int i = rs.getInt(0);
+      return i;
+//      System.out.println("...at the following location: " + rs.getInt(0));
+    } catch (SQLException se) {
+      System.out.println("Problem with SQL");      
+    }
+    //return i;
   }
 
   /*
@@ -104,8 +135,7 @@ public class FilmTable {
     }
 
     try {
-      rs = s.executeQuery("SELECT * FROM film_table");
-      c.close();
+      rs = s.executeQuery("SELECT * FROM film_table");      
     } catch (SQLException se) {
       System.out.println("We got an exception while executing our query:" +
                          "that probably means our SQL is invalid");
