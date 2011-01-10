@@ -373,3 +373,6 @@ CREATE TABLE game_hardware_obtain_table
   game_hardware_obtain_comments character varying
 )
 WITHOUT OIDS;
+
+
+-- Deleteme, testing new version of Eclipse and Subversion
