@@ -63,7 +63,7 @@ WITHOUT OIDS;
 CREATE TABLE film_format_table
 (
   film_format_number serial NOT NULL PRIMARY KEY,
-  film_format_name character varying NOT NULL,  -- The format of the film.  E.g. Cinema, Television etc.
+  film_format_name character varying NOT NULL,  -- The format the film was seen in.  E.g. Cinema, Television etc.
   film_format_description character varying  -- A description of the format  
 ) 
 WITHOUT OIDS;
@@ -120,6 +120,7 @@ WITHOUT OIDS;
 
 
 -- Add Game magazines here too + reference console name etc. Also e.g. SFX (Book - Hardback) etc.
+-- Maybe remove review_source_base!  (14/02/2012)
 --
 CREATE TABLE review_source_table
 (
