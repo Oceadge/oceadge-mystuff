@@ -84,7 +84,7 @@ WITHOUT OIDS;
 CREATE TABLE film_ratio_table
 (
   film_ratio_number serial NOT NULL PRIMARY KEY,
-  film_ration_name character varying NOT NULL  -- The aspect ratio the film was seen in.  E.g. 2.35:1
+  film_ratio_name character varying NOT NULL  -- The aspect ratio the film was seen in.  E.g. 2.35:1
 ) 
 WITHOUT OIDS;
 
@@ -183,7 +183,7 @@ CREATE TABLE film_details_table
   film_details_film_comments character varying,  -- Comments about the film at this viewing.  E.g. I enjoyed it better when I saw it the first time in the cinema
   film_price_currency_number integer REFERENCES film_price_currency_table(film_price_currency_number),
   film_price real, -- The price to see the film in local currency
-  film_price_comment character varying, -- Any comments of the price.  E.g. Reason why it was free etc.
+  film_price_comment character varying, -- Any comments on the price.  E.g. Reason why it was free etc.
   film_imdb_vote boolean, -- Have I voted for this film on the IMDB yet  ** Should this be per instance of seen the film (here) or per film (in the film table)?
   film_worth_buying boolean,  --Do I think it is worth buying to watch again?
   film_rating integer  -- A rating between 1 and 10 of how much I enjoyed the film on this viewing
