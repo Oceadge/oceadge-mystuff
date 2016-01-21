@@ -1,0 +1,1 @@
+As a way to learn Java and Postgresql I wanted to create a database to store my films, games, books and music
