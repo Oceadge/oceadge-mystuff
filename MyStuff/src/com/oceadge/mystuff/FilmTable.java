@@ -18,8 +18,7 @@ import com.oceadge.mystuff.search.*;
  *     film_name_alternative character varying
  *     film_name_original character varying
  *     film_year integer
- *     film_comments character varying
- *     *test jan 2016 test for GitHub commit
+ *     film_comments character varying     
  */
 
 public class FilmTable {
