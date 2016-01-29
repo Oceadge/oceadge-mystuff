@@ -43,7 +43,9 @@ CREATE TABLE film_table
   film_name2 character varying,
   film_name_alternative character varying,
   film_name_original character varying,  -- The original name of the film for example if in a different language
+  film_instance integer,  -- If there is more than one film with the same name in the same year this can be used
   film_year integer,  -- The year the film was made - according to the year at the end of the credits (or another trusted source).
+  film_imdb_id character varying,  -- The IMDb ID of the film.
   film_comments character varying  -- Any comments on the actual film itself (not on a particular viewing).
 ) 
 WITHOUT OIDS;  
